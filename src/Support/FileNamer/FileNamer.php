@@ -7,6 +7,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 abstract class FileNamer
 {
+    public function originalFileName(string $fileName): string
+    {
+        $extLength = strlen(pathinfo($fileName, PATHINFO_EXTENSION));
+        $baseName = substr($fileName, 0, strlen($fileName) - ($extLength ? $extLength + 1 : 0));
+
+        return $baseName;
+    }
+
     abstract public function conversionFileName(string $fileName, Conversion $conversion): string;
 
     abstract public function responsiveFileName(string $fileName): string;

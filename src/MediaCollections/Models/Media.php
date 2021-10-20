@@ -30,15 +30,17 @@ use Spatie\MediaLibraryPro\Models\TemporaryUpload;
 
 class Media extends Model implements Responsable, Htmlable
 {
-    use IsSorted,
-        CustomMediaProperties,
-        HasUuid;
+    use IsSorted;
+    use CustomMediaProperties;
+    use HasUuid;
 
     protected $table = 'media';
 
-    const TYPE_OTHER = 'other';
+    public const TYPE_OTHER = 'other';
 
     protected $guarded = [];
+
+    protected $appends = ['original_url', 'preview_url'];
 
     protected $casts = [
         'manipulations' => 'array',
@@ -270,6 +272,16 @@ class Media extends Model implements Responsable, Htmlable
     public function getSrcset(string $conversionName = ''): string
     {
         return $this->responsiveImages($conversionName)->getSrcset();
+    }
+
+    public function getPreviewUrlAttribute()
+    {
+        return $this->hasGeneratedConversion('preview') ? $this->getUrl('preview') : '';
+    }
+
+    public function getOriginalUrlAttribute()
+    {
+        return $this->getUrl();
     }
 
     public function move(HasMedia $model, $collectionName = 'default', string $diskName = '', string $fileName = ''): self

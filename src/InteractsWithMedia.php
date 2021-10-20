@@ -47,7 +47,7 @@ trait InteractsWithMedia
             }
 
             if (in_array(SoftDeletes::class, class_uses_recursive($model))) {
-                if (!$model->forceDeleting) {
+                if (! $model->forceDeleting) {
                     return;
                 }
             }
@@ -147,12 +147,12 @@ trait InteractsWithMedia
      */
     public function addMediaFromUrl(string $url, ...$allowedMimeTypes): FileAdder
     {
-        if (!Str::startsWith($url, ['http://', 'https://'])) {
+        if (! Str::startsWith($url, ['http://', 'https://'])) {
             throw InvalidUrl::doesNotStartWithProtocol($url);
         }
 
         $downloader = config('media-library.media_downloader', DefaultDownloader::class);
-        $temporaryFile = (new $downloader)->getTempFile($url);
+        $temporaryFile = (new $downloader())->getTempFile($url);
         $this->guardAgainstInvalidMimeType($temporaryFile, $allowedMimeTypes);
 
         $filename = basename(parse_url($url, PHP_URL_PATH));
@@ -162,9 +162,8 @@ trait InteractsWithMedia
             $filename = 'file';
         }
 
-        $mediaExtension = explode('/', mime_content_type($temporaryFile));
-
-        if (!Str::contains($filename, '.')) {
+        if (! Str::contains($filename, '.')) {
+            $mediaExtension = explode('/', mime_content_type($temporaryFile));
             $filename = "{$filename}.{$mediaExtension[1]}";
         }
 
@@ -287,9 +286,14 @@ trait InteractsWithMedia
      */
     public function getMedia(string $collectionName = 'default', $filters = []): MediaCollections\Models\Collections\MediaCollection
     {
-        return app(MediaRepository::class)
+        return $this->getMediaRepository()
             ->getCollection($this, $collectionName, $filters)
             ->collectionName($collectionName);
+    }
+
+    public function getMediaRepository(): MediaRepository
+    {
+        return app(MediaRepository::class);
     }
 
     public function getFirstMedia(string $collectionName = 'default', $filters = []): ?Media
@@ -308,11 +312,11 @@ trait InteractsWithMedia
     {
         $media = $this->getFirstMedia($collectionName);
 
-        if (!$media) {
+        if (! $media) {
             return $this->getFallbackMediaUrl($collectionName) ?: '';
         }
 
-        if ($conversionName !== '' && !$media->hasGeneratedConversion($conversionName)) {
+        if ($conversionName !== '' && ! $media->hasGeneratedConversion($conversionName)) {
             return $media->getUrl();
         }
 
@@ -332,11 +336,11 @@ trait InteractsWithMedia
     ): string {
         $media = $this->getFirstMedia($collectionName);
 
-        if (!$media) {
+        if (! $media) {
             return $this->getFallbackMediaUrl($collectionName) ?: '';
         }
 
-        if ($conversionName !== '' && !$media->hasGeneratedConversion($conversionName)) {
+        if ($conversionName !== '' && ! $media->hasGeneratedConversion($conversionName)) {
             return $media->getTemporaryUrl($expiration);
         }
 
@@ -377,11 +381,11 @@ trait InteractsWithMedia
     {
         $media = $this->getFirstMedia($collectionName);
 
-        if (!$media) {
+        if (! $media) {
             return $this->getFallbackMediaPath($collectionName) ?: '';
         }
 
-        if ($conversionName !== '' && !$media->hasGeneratedConversion($conversionName)) {
+        if ($conversionName !== '' && ! $media->hasGeneratedConversion($conversionName)) {
             return $media->getPath();
         }
 
@@ -507,7 +511,7 @@ trait InteractsWithMedia
 
         $media = $this->media->find($mediaId);
 
-        if (!$media) {
+        if (! $media) {
             throw MediaCannotBeDeleted::doesNotBelongToModel($mediaId, $this);
         }
 

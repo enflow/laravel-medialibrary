@@ -2,6 +2,70 @@
 
 All notable changes to `laravel-medialibrary` will be documented in this file
 
+## 9.8.3 - 2021-10-19
+
+- appends preview_url and original_url to Media object
+
+## 9.8.2 - 2021-10-13
+
+- revert #2609
+
+## 9.8.1 - 2021-10-08
+
+- fix missing image preview URLs in Inertia Projects (#2609)
+
+## 9.8.0 - 2021-10-04
+
+- add simpler way to prefix the root directory where media are saved (#2576)
+
+## 9.7.5 - 2021-10-03
+
+- Remove regex on FileNamer (#2587)
+
+## 9.7.4 - 2021-09-10
+
+- include --force param to image_optimzer . jpegoptim (#2580)
+
+## 9.7.3 - 2021-09-04
+
+- make sure only the extension is removed on DefaultFileNamer (#2575)
+
+## 9.7.2 - 2021-08-22
+
+- add custom header support for temporary uploads (#2557)
+
+## 9.7.1 - 2021-07-29
+
+- allow `keepOriginalImageFormat()` method to work with uppercase file extensions (#2527)
+
+## 9.7.0 - 2021-07-28
+
+- add getMediaRepository() to InteractsWithMedia and query() to MediaRepository (#2523)
+
+## 9.6.4 - 2021-06-23
+
+- fix syntax error
+
+## 9.6.3 - 2021-06-23
+
+- add the option to skip 'deprecated conversions' when cleaning the media directory
+
+## 9.6.2 - 2021-05-06
+
+- simplify and speed up code for copying a stream to disk (#2425)
+
+## 9.6.1 - 2021-05-06
+
+- update InteractsWithMedia.php (#2421)
+
+## 9.6.0 - 2021-05-05
+
+- add a way to rename files globally (#2418)
+
+## 9.5.6 - 2021-04-20
+
+- include extra_headers when adding media from same S3 Disk (#2403)
+
 ## 9.5.5 - 2021-04-13
 
 - fix adding private media from same S3 Disk (#2382)
@@ -273,6 +337,10 @@ All notable changes to `laravel-medialibrary` will be documented in this file
 - improved naming of classes and namespaces.
 
 To learn how to upgrade, take a look in UPGRADING.md
+
+## 7.20.0 - 2021-05-26
+
+- add support for PHP 8
 
 ## 7.19.3 - 2020-03-09
 

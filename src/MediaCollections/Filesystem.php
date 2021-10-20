@@ -91,6 +91,10 @@ class Filesystem
             return false;
         }
 
+        if (count(config('media-library.remote.extra_headers')) > 0) {
+            return false;
+        }
+
         return true;
     }
 
@@ -180,20 +184,7 @@ class Filesystem
 
     public function copyFromMediaLibrary(Media $media, string $targetFile): string
     {
-        touch($targetFile);
-
-        $stream = $this->getStream($media);
-
-        $targetFileStream = fopen($targetFile, 'a');
-
-        while (! feof($stream)) {
-            $chunk = fgets($stream, 1024);
-            fwrite($targetFileStream, $chunk);
-        }
-
-        fclose($stream);
-
-        fclose($targetFileStream);
+        file_put_contents($targetFile, $this->getStream($media));
 
         return $targetFile;
     }
@@ -213,7 +204,9 @@ class Filesystem
         collect([$mediaDirectory, $conversionsDirectory, $responsiveImagesDirectory])
             ->each(function (string $directory) use ($media) {
                 try {
-                    $this->filesystem->disk($media->conversions_disk)->deleteDirectory($directory);
+                    if ($this->filesystem->disk($media->conversions_disk)->exists($directory)) {
+                        $this->filesystem->disk($media->conversions_disk)->deleteDirectory($directory);
+                    }
                 } catch (Exception $exception) {
                     report($exception);
                 }

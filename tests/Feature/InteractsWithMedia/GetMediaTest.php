@@ -4,6 +4,7 @@ namespace Spatie\MediaLibrary\Tests\Feature\InteractsWithMedia;
 
 use DB;
 use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\MediaCollections\MediaRepository;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Tests\TestCase;
 use Spatie\MediaLibrary\Tests\TestSupport\TestModels\TestModel;
@@ -34,6 +35,12 @@ class GetMediaTest extends TestCase
         $this->assertCount(1, $this->testModel->getMedia('images'));
         $this->assertCount(1, $this->testModel->getMedia('downloads'));
         $this->assertCount(1, $this->testModel->getMedia());
+    }
+
+    /** @test */
+    public function it_will_return_media_repository()
+    {
+        $this->assertInstanceOf(MediaRepository::class, $this->testModel->getMediaRepository());
     }
 
     /** @test */
@@ -263,7 +270,7 @@ class GetMediaTest extends TestCase
 
         $this->assertEquals($this->getMediaDirectory("{$media->id}/test.jpg"), $this->testModelWithConversionQueued->getFirstMediaPath('avatar', 'avatar_thumb'));
     }
-    
+
     /** @test */
     public function it_can_get_the_correct_path_to_the_converted_media_in_a_collection_if_conversion_is_marked_as_generated()
     {

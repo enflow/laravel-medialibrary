@@ -3,7 +3,7 @@ title: Creating custom Vue components
 weight: 7
 ---
 
-Both the Vue and UI components are built on top of the same core, with a language-specific abstraction layer in between that exposes some helper functions. You can extend the core that the UI components are built on. This allow you to customize the UI. This page will go into detail about these abstraction layers.
+Both the Vue and UI components are built on top of the same core, with a language-specific abstraction layer in between that exposes some helper functions. You can extend the core that the UI components are built on. This allows you to customize the UI. This page will go into detail about these abstraction layers.
 
 The Vue implementation uses a renderless component that exposes all the functions and values through a slot scope.
 
@@ -246,7 +246,7 @@ handleClass?: string
 | variable name                   | Description                                                                                                                                                                                                                                             |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | mediaLibrary                    | Ref to the MediaLibrary instance                                                                                                                                                                                                                        |
-| state                           | The state of the MediaLibrary instance. Includes `media` (an array of currently added files), `invalidMedia` (files that encountered a frontned validation error) and `validationErrors` (backend validation errors mapped to uuids)                    |
+| state                           | The state of the MediaLibrary instance. Includes `media` (an array of currently added files), `invalidMedia` (files that encountered a frontend validation error) and `validationErrors` (backend validation errors mapped to uuids)                    |
 | isReadyToSubmit                 | Boolean that tells whether the MediaLibrary instance is ready to submit (has no uploads in progress and has no frontend validation errors)                                                                                                              |
 | hasUploadsInProgress            | Boolean that tells whether the MediaLibrary instance currently has uploads in progress                                                                                                                                                                  |
 | getImgProps                     | Method that expects a media object, and returns an object with props needed for an `img` tag                                                                                                                                                            |
